@@ -1,7 +1,7 @@
 {
-    "name": "Mi Página NFC",
-    "short_name": "MiNFC",
-    "description": "Una aplicación web para gestionar NFC fácilmente."
+    "name": "MiPaginaPWA",
+    "short_name": "MiPaginaPWA",
+    "description": "Una aplicación web para gestionar MiPaginaPWA fácilmente."
 
 
 
