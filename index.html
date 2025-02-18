@@ -14,6 +14,13 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   
+  <script>
+    // Función para mostrar el mensaje
+    function mostrarHola() {
+        alert("¡Ten un buen dia!");
+    }
+</script>
+
   <link rel="manifest" href="./manifest.json">
 
   <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet">
@@ -24,7 +31,7 @@
 <body>
   <header class="Header">
     <h1>Hola Mundo</h1>
-      <button>Saludos</button>
+    <button onclick="mostrarHola()">Haz clic aquí</button>
   </header>
   <script src="./script.js"></script>
 </body>
