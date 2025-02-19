@@ -1,6 +1,6 @@
 # mipwa (mipwa)
 
-mipwa
+mi pwa
 
 ## Install the dependencies
 ```bash
