@@ -5,7 +5,7 @@
       <q-toolbar>
         <q-toolbar-title>
           <q-avatar>
-            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
+            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg" alt="Logo">
           </q-avatar>
           Mi Pagina PWA
         </q-toolbar-title>
@@ -27,14 +27,11 @@
                 @click="openDialog('QR')"
               />
 
-              <q-dialog v-model="dialogVisible">
+              <!-- Diálogo para Generador de QR -->
+              <q-dialog v-model="dialogVisibleQR">
                 <q-card>
-                  <q-card-section class="row items-center q-pb-none text-h6">
+                  <q-card-section class="row items-center q-pb-none text-h4">
                     Generador de QR
-                  </q-card-section>
-
-                  <q-card-section>
-                    Aquí puedes generar tu código QR.
                   </q-card-section>
 
                   <q-card-actions align="right">
@@ -58,14 +55,11 @@
                 @click="openDialog('NFC')"
               />
 
-              <q-dialog v-model="dialogVisible">
+              <!-- Diálogo para Lector de NFC -->
+              <q-dialog v-model="dialogVisibleNFC">
                 <q-card>
-                  <q-card-section class="row items-center q-pb-none text-h6">
+                  <q-card-section class="row items-center q-pb-none text-h4">
                     Lector de NFC
-                  </q-card-section>
-
-                  <q-card-section>
-                    Acerca tu dispositivo.
                   </q-card-section>
 
                   <q-card-actions align="right">
@@ -86,16 +80,24 @@ import { ref } from 'vue'
 
 export default {
   setup() {
-    const dialogVisible = ref(false)
+    // Establecemos estados separados para los diálogos
+    const dialogVisibleQR = ref(false)
+    const dialogVisibleNFC = ref(false)
 
-    // Función para abrir el diálogo
+    // Función para abrir el diálogo según el tipo
     const openDialog = (type) => {
-      dialogVisible.value = true
-      console.log(`Diálogo abierto para: ${type}`)
+      if (type === 'QR') {
+        dialogVisibleQR.value = true
+        console.log('Diálogo abierto para: Generador de QR')
+      } else if (type === 'NFC') {
+        dialogVisibleNFC.value = true
+        console.log('Diálogo abierto para: Lector de NFC')
+      }
     }
 
     return {
-      dialogVisible,
+      dialogVisibleQR,
+      dialogVisibleNFC,
       openDialog
     }
   }
