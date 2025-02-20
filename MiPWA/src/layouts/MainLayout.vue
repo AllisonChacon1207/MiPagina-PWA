@@ -17,7 +17,7 @@
       <q-page class="q-pa-md">
         <!-- Primer q-card: Generador de QR -->
         <q-card class="q-mb-md">
-          <q-card-section>
+          <q-card-section class="small-card-section">
             <h1>Generador de QR</h1>
             <div class="q-pa-md q-gutter-sm">
               <q-btn
@@ -31,7 +31,7 @@
               <q-dialog v-model="dialogVisibleQR">
                 <q-card>
                   <q-card-section class="row items-center q-pb-none text-h4">
-                    Generador de QR
+                    Se mostrara el QR
                   </q-card-section>
 
                   <q-card-actions align="right">
@@ -46,7 +46,7 @@
         <!-- Segundo q-card: Lector de NFC -->
         <q-card>
           <q-card-section>
-            <h1>Lector de NFC</h1>
+            <h1>Lector del NFC</h1>
             <div class="q-pa-md q-gutter-sm">
               <q-btn
                 color="primary"
@@ -59,7 +59,7 @@
               <q-dialog v-model="dialogVisibleNFC">
                 <q-card>
                   <q-card-section class="row items-center q-pb-none text-h4">
-                    Lector de NFC
+                    Los botones del NFC
                   </q-card-section>
 
                   <q-card-actions align="right">
@@ -106,4 +106,10 @@ export default {
 
 <style scoped>
 /* Estilos específicos para este componente */
+
+.small-card-section {
+  padding: 10px; /* Puedes ajustar el valor según el tamaño que prefieras */
+  font-size: 10px; /* Si también deseas reducir el tamaño del texto */
+}
+
 </style>
