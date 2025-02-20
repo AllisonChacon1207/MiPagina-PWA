@@ -11,10 +11,9 @@
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
-
+        <h1>Hola</h1>
     <q-page-container>
       <router-view />
     </q-page-container>
-      
   </q-layout>
 </template>
