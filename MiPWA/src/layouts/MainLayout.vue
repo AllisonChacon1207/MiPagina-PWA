@@ -65,7 +65,7 @@
                   </q-card-section>
 
                   <q-card-section>
-                    Acerca tu dispositivo NFC para leer.
+                    Acerca tu dispositivo.
                   </q-card-section>
 
                   <q-card-actions align="right">
