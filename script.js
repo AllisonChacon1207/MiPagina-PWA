@@ -22,3 +22,5 @@ document.getElementById('writeButton').addEventListener('click', async () => {
       alert('Error al escribir en el tag NFC: ' + error.message);
   }
 });
+
+import QrcodeVue from 'qrcode.vue';
