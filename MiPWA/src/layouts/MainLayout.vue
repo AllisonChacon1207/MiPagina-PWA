@@ -24,8 +24,18 @@
                 color="primary"
                 label="Generar QR"
                 no-caps
-                @click="openDialog('QR')"
+                @click="generateQR"
               />
+
+              <!-- Mostrar QR generado -->
+              <div v-if="qrCodeVisible">
+                <QrcodeVue :value="qrValue" ref="qrCodeElement" />
+                <q-btn
+                  color="secondary"
+                  label="Descargar QR"
+                  @click="downloadQR"
+                />
+              </div>
 
               <!-- Diálogo para Generador de QR -->
               <q-dialog v-model="dialogVisibleQR">
@@ -92,13 +102,12 @@ import html2canvas from 'html2canvas'; // Importar html2canvas para capturar el 
 
 export default {
   components: {
-    QrcodeVue, // Registrar el QR
+    QrcodeVue, // Registrar el componente QR
   },
   setup() {
     // Estado de los diálogos
     const dialogVisibleQR = ref(false);
     const dialogVisibleNFC = ref(false);
-    const dialogVisible = ref(false);
     const cellInfo = ref('');
     const qrCodeVisible = ref(false);
     const qrValue = ref('');
@@ -135,18 +144,11 @@ export default {
       }
     };
 
-    // Importar QR Code
-    const QRCode = require('qrcode');
-
-    // Importar html2canvas
-    const html2canvas = require('html2canvas');
-
-
     // Función cuando se hace clic en una fila de la tabla
     const onRowClick = (evt, row) => {
       cellInfo.value = `Nombre: ${row.name}, Edad: ${row.age}, Dirección: ${row.address}`;
       qrCodeVisible.value = false;
-      dialogVisible.value = true;
+      dialogVisibleQR.value = true;
     };
 
     // Función para generar el QR
@@ -168,7 +170,6 @@ export default {
     return {
       dialogVisibleQR,
       dialogVisibleNFC,
-      dialogVisible,
       cellInfo,
       qrCodeVisible,
       qrValue,
