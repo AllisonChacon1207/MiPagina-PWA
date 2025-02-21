@@ -1,97 +1,78 @@
 <template>
   <q-layout view="hHh lpR fFf">
-    <!-- Encabezado -->
     <q-header bordered class="bg-primary text-white">
       <q-toolbar>
         <q-toolbar-title>
           <q-avatar>
-            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg" alt="Logo">
+            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
           </q-avatar>
-          Mi Pagina PWA
+          Tabla de Datos
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
 
-    <!-- Contenido principal -->
-    <q-page-container>
-      <q-page class="q-pa-md">
-        <!-- Primer q-card: Generador de QR -->
-        <q-card class="q-mb-md">
-          <q-card-section class="small-card-section">
-            <h1>Generador de QR</h1>
-            <div class="q-pa-md q-gutter-sm">
-              <q-btn
-                color="primary"
-                label="Generar QR"
-                no-caps
-                @click="generateQR"
-              />
+    <q-page>
+      <!-- Primer q-card-section dentro de q-page -->
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">Bienvenido a la Tabla</div>
+          <p>Aquí puedes ver y seleccionar filas para más detalles.</p>
+        </q-card-section>
 
-              <!-- Mostrar QR generado -->
-              <div v-if="qrCodeVisible">
-                <QrcodeVue :value="qrValue" ref="qrCodeElement" />
-                <q-btn
-                  color="secondary"
-                  label="Descargar QR"
-                  @click="downloadQR"
-                />
-              </div>
+        <!-- Segundo q-card-section dentro de q-page -->
+        <q-card-section>
+          <q-table
+            title="Mi Tabla"
+            :rows="rows"
+            :columns="columns"
+            row-key="name"
+            @row-click="onRowClick"
+          />
+        </q-card-section>
+      </q-card>
 
-              <!-- Diálogo para Generador de QR -->
-              <q-dialog v-model="dialogVisibleQR">
-                <q-card>
-                  <q-card-section class="row items-center q-pb-none text-h4">
-                    Se mostrará el QR
-                  </q-card-section>
-
-                  <q-card-section>
-                    <q-table
-                      title="Mi Tabla"
-                      :rows="rows"
-                      :columns="columns"
-                      row-key="name"
-                      @row-click="onRowClick"
-                    />
-                  </q-card-section>
-
-                  <q-card-actions align="right">
-                    <q-btn flat label="Cerrar" color="primary" v-close-popup />
-                  </q-card-actions>
-                </q-card>
-              </q-dialog>
-            </div>
-          </q-card-section>
-        </q-card>
-
-        <!-- Segundo q-card: Lector de NFC -->
+      <!-- Dialogo para mostrar más información de la celda -->
+      <q-dialog v-model="dialogVisible">
         <q-card>
           <q-card-section>
-            <h1>Lector del NFC</h1>
-            <div class="q-pa-md q-gutter-sm">
-              <q-btn
-                color="primary"
-                label="Leer NFC"
-                no-caps
-                @click="openDialog('NFC')"
-              />
+            <div class="text-h6">Información de la Celda</div>
+          </q-card-section>
 
-              <!-- Diálogo para Lector de NFC -->
-              <q-dialog v-model="dialogVisibleNFC">
-                <q-card>
-                  <q-card-section class="row items-center q-pb-none text-h4">
-                    Los botones del NFC
-                  </q-card-section>
+          <q-card-section>
+            {{ cellInfo }}
+          </q-card-section>
 
-                  <q-card-actions align="right">
-                    <q-btn flat label="Cerrar" color="primary" v-close-popup />
-                  </q-card-actions>
-                </q-card>
-              </q-dialog>
+          <!-- Botón para generar QR -->
+          <q-card-section>
+            <q-btn
+              label="Generar QR"
+              color="primary"
+              @click="generateQR"
+            />
+          </q-card-section>
+
+          <!-- Mostrar el código QR generado -->
+          <q-card-section v-if="qrCodeVisible">
+            <div ref="qrCodeElement">
+              <qrcode-vue :value="qrValue" :size="200" level="H" />
             </div>
           </q-card-section>
+
+          <!-- Botón para descargar el QR -->
+          <q-card-section v-if="qrCodeVisible">
+            <q-btn
+              label="Descargar QR"
+              color="secondary"
+              @click="downloadQR"
+            />
+          </q-card-section>
+
+          <q-card-actions align="right">
+            <q-btn flat label="Cerrar" color="primary" v-close-popup />
+          </q-card-actions>
         </q-card>
-      </q-page>
-    </q-page-container>
+      </q-dialog>
+    </q-page>
   </q-layout>
 </template>
 
@@ -102,18 +83,15 @@ import html2canvas from 'html2canvas'; // Importar html2canvas para capturar el 
 
 export default {
   components: {
-    QrcodeVue, // Registrar el componente QR
+    QrcodeVue, // Registrar el QR
   },
   setup() {
-    // Estado de los diálogos
-    const dialogVisibleQR = ref(false);
-    const dialogVisibleNFC = ref(false);
+    const dialogVisible = ref(false);
     const cellInfo = ref('');
-    const qrCodeVisible = ref(false);
-    const qrValue = ref('');
-    const qrCodeElement = ref(null);
+    const qrCodeVisible = ref(false); // VER QR
+    const qrValue = ref(''); // Valor para generar el QR
+    const qrCodeElement = ref(null); // Referencia al elemento del QR
 
-    // Datos para la tabla
     const columns = [
       { name: 'name', label: 'Nombre', field: 'name', align: 'left' },
       { name: 'age', label: 'Edad', field: 'age', align: 'left' },
@@ -133,32 +111,21 @@ export default {
       { name: 'Noe', age: 19, address: 'Hoya 0101' },
     ];
 
-    // Función para abrir diálogos según tipo
-    const openDialog = (type) => {
-      if (type === 'QR') {
-        dialogVisibleQR.value = true;
-        console.log('Diálogo abierto para: Generador de QR');
-      } else if (type === 'NFC') {
-        dialogVisibleNFC.value = true;
-        console.log('Diálogo abierto para: Lector de NFC');
-      }
-    };
-
-    // Función cuando se hace clic en una fila de la tabla
     const onRowClick = (evt, row) => {
+      // Mostrar la información de la fila
       cellInfo.value = `Nombre: ${row.name}, Edad: ${row.age}, Dirección: ${row.address}`;
-      qrCodeVisible.value = false;
-      dialogVisibleQR.value = true;
+      qrCodeVisible.value = false; // Ocultar el QR al cambiar de fila
+      dialogVisible.value = true;
     };
 
-    // Función para generar el QR
     const generateQR = () => {
+      // QR información de la celda
       qrValue.value = cellInfo.value;
-      qrCodeVisible.value = true;
+      qrCodeVisible.value = true; // Mostrar el QR
     };
 
-    // Función para descargar el QR
     const downloadQR = () => {
+      // QR y convertirlo en una imagen
       html2canvas(qrCodeElement.value).then(canvas => {
         const link = document.createElement('a');
         link.href = canvas.toDataURL('image/png');
@@ -168,15 +135,13 @@ export default {
     };
 
     return {
-      dialogVisibleQR,
-      dialogVisibleNFC,
+      columns,
+      rows,
+      dialogVisible,
       cellInfo,
       qrCodeVisible,
       qrValue,
       qrCodeElement,
-      columns,
-      rows,
-      openDialog,
       onRowClick,
       generateQR,
       downloadQR,
@@ -184,11 +149,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-/* Estilos específicos para este componente */
-.small-card-section {
-  padding: 10px;
-  font-size: 10px;
-}
-</style>
