@@ -10,28 +10,20 @@
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
-
-    <q-page>
-      <!-- Primer q-card-section dentro de q-page -->
-      <q-card>
-        <q-card-section>
-          <div class="text-h6">Bienvenido a la Tabla</div>
-          <p>Aquí puedes ver y seleccionar filas para más detalles.</p>
-        </q-card-section>
-
-        <!-- Segundo q-card-section dentro de q-page -->
-        <q-card-section>
-          <q-table
-            title="Mi Tabla"
-            :rows="rows"
-            :columns="columns"
-            row-key="name"
-            @row-click="onRowClick"
-          />
-        </q-card-section>
-      </q-card>
-
-      <!-- Dialogo para mostrar más información de la celda -->
+<!--------------------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------------------->
+    <div>
+      <!-- Tabla de Quasar ROWS (ONROWCLICK) --> 
+      <q-table
+        title="Mi Tabla"
+        :rows="rows"
+        :columns="columns"
+        row-key="name"
+        @row-click="onRowClick"
+      />
+<!--------------------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------------------->
+      <!-- LLAMAMOS A UNA de la celda y generar QR -->
       <q-dialog v-model="dialogVisible">
         <q-card>
           <q-card-section>
@@ -41,7 +33,8 @@
           <q-card-section>
             {{ cellInfo }}
           </q-card-section>
-
+<!--------------------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------------------->
           <!-- Botón para generar QR -->
           <q-card-section>
             <q-btn
@@ -50,14 +43,16 @@
               @click="generateQR"
             />
           </q-card-section>
-
+<!--------------------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------------------->
           <!-- Mostrar el código QR generado -->
           <q-card-section v-if="qrCodeVisible">
             <div ref="qrCodeElement">
               <qrcode-vue :value="qrValue" :size="200" level="H" />
             </div>
           </q-card-section>
-
+<!--------------------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------------------->
           <!-- Botón para descargar el QR -->
           <q-card-section v-if="qrCodeVisible">
             <q-btn
@@ -72,10 +67,11 @@
           </q-card-actions>
         </q-card>
       </q-dialog>
-    </q-page>
+    </div>
   </q-layout>
 </template>
-
+<!--------------------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------------------->
 <script>
 import { ref } from 'vue';
 import QrcodeVue from 'qrcode.vue'; // Importar la librería para generar QR
@@ -97,7 +93,8 @@ export default {
       { name: 'age', label: 'Edad', field: 'age', align: 'left' },
       { name: 'address', label: 'Dirección', field: 'address', align: 'left' },
     ];
-
+//<!--------------------------------------------------------------------------------------->
+//<!--------------------------------------------------------------------------------------->
     const rows = [
       { name: 'Juan', age: 19, address: 'La Joya 123' },
       { name: 'Ana', age: 29, address: 'Residencial 456' },
@@ -110,20 +107,23 @@ export default {
       { name: 'Lazaro', age: 35, address: 'Peña 789' },
       { name: 'Noe', age: 19, address: 'Hoya 0101' },
     ];
-
+//<!--------------------------------------------------------------------------------------->
+//<!--------------------------------------------------------------------------------------->
     const onRowClick = (evt, row) => {
       // Mostrar la información de la fila
       cellInfo.value = `Nombre: ${row.name}, Edad: ${row.age}, Dirección: ${row.address}`;
       qrCodeVisible.value = false; // Ocultar el QR al cambiar de fila
       dialogVisible.value = true;
     };
-
+//<!--------------------------------------------------------------------------------------->
+//<!--------------------------------------------------------------------------------------->
     const generateQR = () => {
       // QR información de la celda
       qrValue.value = cellInfo.value;
       qrCodeVisible.value = true; // Mostrar el QR
     };
-
+//<!--------------------------------------------------------------------------------------->
+//<!--------------------------------------------------------------------------------------->
     const downloadQR = () => {
       // QR y convertirlo en una imagen
       html2canvas(qrCodeElement.value).then(canvas => {
