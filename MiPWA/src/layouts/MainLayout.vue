@@ -31,7 +31,17 @@
               <q-dialog v-model="dialogVisibleQR">
                 <q-card>
                   <q-card-section class="row items-center q-pb-none text-h4">
-                    Se mostrara el QR
+                    Se mostrará el QR
+                  </q-card-section>
+
+                  <q-card-section>
+                    <q-table
+                      title="Mi Tabla"
+                      :rows="rows"
+                      :columns="columns"
+                      row-key="name"
+                      @row-click="onRowClick"
+                    />
                   </q-card-section>
 
                   <q-card-actions align="right">
@@ -76,40 +86,108 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref } from 'vue';
+import QrcodeVue from 'qrcode.vue'; // Importar la librería para generar QR
+import html2canvas from 'html2canvas'; // Importar html2canvas para capturar el QR
 
 export default {
+  components: {
+    QrcodeVue, // Registrar el QR
+  },
   setup() {
-    // Establecemos estados separados para los diálogos
-    const dialogVisibleQR = ref(false)
-    const dialogVisibleNFC = ref(false)
+    // Estado de los diálogos
+    const dialogVisibleQR = ref(false);
+    const dialogVisibleNFC = ref(false);
+    const dialogVisible = ref(false);
+    const cellInfo = ref('');
+    const qrCodeVisible = ref(false);
+    const qrValue = ref('');
+    const qrCodeElement = ref(null);
 
-    // Función para abrir el diálogo según el tipo
+    // Datos para la tabla
+    const columns = [
+      { name: 'name', label: 'Nombre', field: 'name', align: 'left' },
+      { name: 'age', label: 'Edad', field: 'age', align: 'left' },
+      { name: 'address', label: 'Dirección', field: 'address', align: 'left' },
+    ];
+
+    const rows = [
+      { name: 'Juan', age: 19, address: 'La Joya 123' },
+      { name: 'Ana', age: 29, address: 'Residencial 456' },
+      { name: 'Luis', age: 55, address: 'Barrio 789' },
+      { name: 'Mario', age: 35, address: 'Las Uvas 123' },
+      { name: 'Allison', age: 32, address: 'Arboleda 456' },
+      { name: 'Carlos', age: 27, address: 'Kennedy 789' },
+      { name: 'Eduardo', age: 25, address: 'Cañada 123' },
+      { name: 'Anahi', age: 30, address: 'Pedregal 456' },
+      { name: 'Lazaro', age: 35, address: 'Peña 789' },
+      { name: 'Noe', age: 19, address: 'Hoya 0101' },
+    ];
+
+    // Función para abrir diálogos según tipo
     const openDialog = (type) => {
       if (type === 'QR') {
-        dialogVisibleQR.value = true
-        console.log('Diálogo abierto para: Generador de QR')
+        dialogVisibleQR.value = true;
+        console.log('Diálogo abierto para: Generador de QR');
       } else if (type === 'NFC') {
-        dialogVisibleNFC.value = true
-        console.log('Diálogo abierto para: Lector de NFC')
+        dialogVisibleNFC.value = true;
+        console.log('Diálogo abierto para: Lector de NFC');
       }
-    }
+    };
+
+    // Importar QR Code
+    const QRCode = require('qrcode');
+
+    // Importar html2canvas
+    const html2canvas = require('html2canvas');
+
+
+    // Función cuando se hace clic en una fila de la tabla
+    const onRowClick = (evt, row) => {
+      cellInfo.value = `Nombre: ${row.name}, Edad: ${row.age}, Dirección: ${row.address}`;
+      qrCodeVisible.value = false;
+      dialogVisible.value = true;
+    };
+
+    // Función para generar el QR
+    const generateQR = () => {
+      qrValue.value = cellInfo.value;
+      qrCodeVisible.value = true;
+    };
+
+    // Función para descargar el QR
+    const downloadQR = () => {
+      html2canvas(qrCodeElement.value).then(canvas => {
+        const link = document.createElement('a');
+        link.href = canvas.toDataURL('image/png');
+        link.download = 'qr-code.png';
+        link.click();
+      });
+    };
 
     return {
       dialogVisibleQR,
       dialogVisibleNFC,
-      openDialog
-    }
-  }
-}
+      dialogVisible,
+      cellInfo,
+      qrCodeVisible,
+      qrValue,
+      qrCodeElement,
+      columns,
+      rows,
+      openDialog,
+      onRowClick,
+      generateQR,
+      downloadQR,
+    };
+  },
+};
 </script>
 
 <style scoped>
 /* Estilos específicos para este componente */
-
 .small-card-section {
-  padding: 10px; /* Puedes ajustar el valor según el tamaño que prefieras */
-  font-size: 10px; /* Si también deseas reducir el tamaño del texto */
+  padding: 10px;
+  font-size: 10px;
 }
-
 </style>
