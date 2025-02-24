@@ -7,11 +7,11 @@
             <q-avatar>
               <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
             </q-avatar>
-            Tabla de Datos
+            Mi Datos en QR
           </q-toolbar-title>
         </q-toolbar>
       </q-header>
-
+        <!------------------------------------------------------------------------------------------------------------->
       <div>
         <!-- Tabla de Quasar con eventos -->
         <q-table
@@ -21,7 +21,7 @@
           row-key="name"
           @row-click="onRowClick"
         />
-
+        <!------------------------------------------------------------------------------------------------------------->
         <!-- Diálogo para mostrar información de la celda y generar QR -->
         <q-dialog v-model="dialogVisible">
           <q-card>

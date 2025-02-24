@@ -26,12 +26,12 @@
               </q-item-section>
             </q-item>
 <!------------------------------------------------------------------------------------------------------------->
-            <q-item active clickable v-ripple to="">
+            <q-item active clickable v-ripple to="/MiPWA/src/pages/MiPrimero.vue">
               <q-item-section avatar>
                 <q-icon name="star" />
               </q-item-section>
               <q-item-section>
-                Mi QR
+                Mi Datos en QR
               </q-item-section>
             </q-item>
 <!------------------------------------------------------------------------------------------------------------->
