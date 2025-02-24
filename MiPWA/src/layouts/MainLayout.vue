@@ -35,7 +35,7 @@
               </q-item-section>
             </q-item>
 <!------------------------------------------------------------------------------------------------------------->
-            <q-item clickable v-ripple>
+            <q-item clickable v-ripple to="/MiPWA/src/pages/MiSegundo.vue">
               <q-item-section avatar>
                 <q-icon name="send" />
               </q-item-section>
