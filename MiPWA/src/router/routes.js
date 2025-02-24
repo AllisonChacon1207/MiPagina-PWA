@@ -4,7 +4,7 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/IndexPage.vue') },
-      { path: '/Qrcode.vue', component: () => import('src/pages/primero.vue') }, //LLAMAR AL PAGE QR
+      { path: '/Qrcode.vue', component: () => import('src/pages/MiPrimero.vue') }, //LLAMAR AL PAGE QR
     ]
   },
 
