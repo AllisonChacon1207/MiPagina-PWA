@@ -4,6 +4,10 @@
         <q-toolbar>
           <q-toolbar-title>Mi Proyecto</q-toolbar-title>
           <q-btn flat @click="drawer = !drawer" round dense icon="menu" />
+<!--------------------------------------------------------------------------------->
+               <!-- Botón de instalación -->
+        <q-btn v-if="showInstallButton" @click="installPWA" label="Instalar App" color="positive" />
+<!--------------------------------------------------------------------------------->
         </q-toolbar>
       </q-header>
 <!------------------------------------------------------------------------------------------------------------->
@@ -72,19 +76,49 @@
         </router-view>
       </q-page-container>
     </q-layout>
-</template>
+</template> <!--------------------------------------------------------------------------------->
 <!------------------------------------------------------------------------------------------------------------->
 <!------------------------------------------------------------------------------------------------------------->
 <script>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue';
 
 export default {
-  setup () {
-    const drawer = ref(false)
+  setup() {
+    const drawer = ref(false);
+    const showInstallButton = ref(false);
+    let deferredPrompt = null;
+
+    // Evento para detectar cuándo la PWA puede ser instalada
+    onMounted(() => {
+      window.addEventListener('beforeinstallprompt', (event) => {
+        event.preventDefault(); // Evita que el prompt se muestre automáticamente
+        deferredPrompt = event; // Guarda el evento para usarlo más tarde
+        showInstallButton.value = true; // Muestra el botón de instalación
+      });
+    });
+
+    // Método para instalar la PWA
+    const installPWA = () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt(); // Muestra el prompt de instalación
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('Usuario aceptó la instalación');
+          } else {
+            console.log('Usuario rechazó la instalación');
+          }
+          deferredPrompt = null; // Limpia el evento
+          showInstallButton.value = false; // Oculta el botón
+        });
+      }
+    };
 
     return {
-        drawer   
-      }
-    }
-  }
+      drawer,
+      showInstallButton,
+      installPWA,
+    };
+  },
+};
+  
 </script>
