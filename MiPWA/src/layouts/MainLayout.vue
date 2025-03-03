@@ -1,4 +1,7 @@
 <template>
+  <MainLayout>
+    <template v-slot:content>
+      <!-- Contenido de la página -->
     <q-layout view="lHh Lpr lff">
       <q-header elevated class="bg-cyan-8">
         <q-toolbar>
@@ -76,11 +79,23 @@
         </router-view>
       </q-page-container>
     </q-layout>
+  </template>
+</MainLayout>
 </template> <!--------------------------------------------------------------------------------->
 <!------------------------------------------------------------------------------------------------------------->
 <!------------------------------------------------------------------------------------------------------------->
 <script>
 import { ref, onMounted } from 'vue';
+import MainLayout from './layouts/MainLayout.vue';
+
+/*INSERTADO*/
+import Vue from 'vue';
+import Router from 'vue-router';
+import Home from '@/views/Home.vue';
+import MainLayout from '@/MainLayout.vue';
+
+Vue.use(Router);
+/**----------------*/
 
 export default {
   setup() {
@@ -119,6 +134,6 @@ export default {
       installPWA,
     };
   },
-};
+};  
   
 </script>
