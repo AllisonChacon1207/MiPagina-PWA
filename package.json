@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "@realfavicongenerator/generate-favicon": "^0.4.12",
+    "@realfavicongenerator/image-adapter-node": "^0.4.12",
+    "html2canvas": "^1.4.1",
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "@realfavicongenerator/gulp-real-favicon": "^0.4.12"
+  }
+}
